@@ -1,0 +1,32 @@
+YAML
+name: Deploy to OVH
+
+on:
+  push:
+    branches:
+      - main # Remplacer par 'master' si votre branche principale s'appelle master
+
+jobs:
+  web-deploy:
+    name: Deploy site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get latest code
+        uses: actions/checkout@v4
+
+      # Si votre site nécessite une étape de build (ex: npm run build), décommentez les lignes suivantes :
+      # - name: Setup Node
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20'
+      # - run: npm ci
+      # - run: npm run build
+
+      - name: Sync files via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ./www/ # Dossier de destination sur OVH
+          # local-dir: ./dist/ # À décommenter si vous déployez un dossier généré par un build
