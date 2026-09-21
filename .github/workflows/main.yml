@@ -1,6 +1,6 @@
 YAML
 
-name: Deploy to OVH
+name: "Deploy to OVH"
 
 on:
   push:
